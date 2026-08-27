@@ -1,4 +1,4 @@
-# Subash Bhatta — Portfolio
+# Anuj Pratap Singh — Portfolio
 
 > Full-Stack Engineer building production-grade web platforms, scalable APIs, and rapid MVPs.
 
@@ -33,4 +33,4 @@ This static portfolio is ready for zero-config deployment on **Vercel**, **GitHu
 
 ## 📄 License
 
-Crafted with precision by [Subash Bhatta](https://github.com/subash5097) © 2026.
+Crafted with precision by [Anuj Pratap Singh](https://github.com/anujpsingh-learn) © 2026.
