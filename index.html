@@ -1,0 +1,3634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anuj P. Singh | Full-Stack Developer &amp; CSE Student Portfolio</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans + Syne + Inter + Patrick Hand + Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Patrick+Hand&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- GSAP & ScrollTrigger for 60FPS Scroll-Driven FLIP Animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       CSS DESIGN TOKENS & SYSTEM
+       ========================================================================== */
+    :root {
+      /* Palette (Unified #1E3A8A Navy across all surfaces) */
+      --bg-canvas: #F9F8F3;           /* Warm sketchbook parchment cream */
+      --bg-primary: #1E3A8A;          /* Single Unified Royal Cobalt Navy for cards & nav */
+      --bg-card: #FFFFFF;             /* Crisp white island containers */
+      --bg-card-subtle: #F8FAFC;
+      
+      /* Typography Colors */
+      --text-white: #FFFFFF;
+      --text-muted: #E0E7FF;          /* Soft light indigo for subtitles */
+      --text-dark: #0F172A;           /* Deep text inside white cards */
+      --text-dark-muted: #475569;
+      
+      /* Accent Colors */
+      --accent-yellow: #FFD23F;       /* Warm yellow highlight */
+      --accent-yellow-dark: #E5B800;
+      --accent-orange: #FF5A36;
+      --accent-purple: #8B5CF6;
+      --accent-blue: #38BDF8;
+      --accent-green: #10B981;
+      
+      /* Linework & Navy-Tinted Soft Elevation Shadows */
+      --doodle-stroke: #FFFFFF;
+      --doodle-width: 2.5px;
+      --shadow-navy-card: 0 24px 60px rgba(30, 58, 138, 0.22), 0 6px 18px rgba(30, 58, 138, 0.12);
+      --shadow-navy-card-hover: 0 30px 70px rgba(30, 58, 138, 0.28), 0 8px 24px rgba(30, 58, 138, 0.16);
+      --shadow-navy-nav: 0 16px 40px rgba(30, 58, 138, 0.22);
+      --shadow-sticker: 0 10px 24px rgba(15, 23, 42, 0.18);
+      
+      /* Typography Stacks (Crisp Modern Geometric Sans Headings + Clean Body + Playful Doodles) */
+      --font-display: 'Plus Jakarta Sans', 'Syne', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-hand: 'Patrick Hand', 'Caveat', cursive;
+      
+      /* Animation Curves */
+      --ease-snappy: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Tactile Dot-Grid Background Texture on #F9F8F3 Cream Paper */
+    body {
+      background-color: var(--bg-canvas);
+      background-image: 
+        radial-gradient(circle at 50% 8%, rgba(255, 210, 63, 0.09) 0%, transparent 45%),
+        radial-gradient(circle at 80% 60%, rgba(30, 58, 138, 0.04) 0%, transparent 40%),
+        radial-gradient(rgba(30, 58, 138, 0.055) 1.2px, transparent 1.2px);
+      background-size: 100% 100%, 100% 100%, 28px 28px;
+      background-position: 0 0, 0 0, 14px 14px;
+      font-family: var(--font-body);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ==========================================================================
+       FLOATING ROUNDED INSET NAVBAR
+       ========================================================================== */
+    .sticky-nav-wrapper {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      padding: 14px 20px 8px;
+      z-index: 500;
+      pointer-events: none;
+    }
+
+    .sticky-nav {
+      max-width: 1180px;
+      margin: 0 auto;
+      background: rgba(30, 58, 138, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      box-shadow: var(--shadow-navy-nav);
+      padding: 8px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      pointer-events: auto;
+      transition: transform 0.25s var(--ease-snappy), box-shadow 0.25s ease;
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: white;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-brand-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent-yellow);
+      letter-spacing: -0.02em;
+      transform: rotate(-3deg);
+      display: inline-block;
+      text-shadow: 1px 2px 0 rgba(0,0,0,0.3);
+    }
+
+    .nav-brand-name {
+      font-family: var(--font-display);
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-white);
+      text-decoration: none;
+      padding: 4px 2px 6px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-item.active .nav-link {
+      color: var(--accent-yellow);
+    }
+
+    /* Hand-Drawn Squiggle Underline */
+    .nav-squiggle {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      stroke: var(--accent-yellow);
+      stroke-width: 2.5px;
+      fill: none;
+      stroke-linecap: round;
+      opacity: 0;
+      transform: translateY(2px) scaleX(0.7);
+      transition: opacity 0.25s ease, transform 0.25s var(--ease-snappy);
+      pointer-events: none;
+    }
+
+    .nav-link:hover .nav-squiggle,
+    .nav-item.active .nav-squiggle {
+      opacity: 1;
+      transform: translateY(0) scaleX(1);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .nav-resume-btn {
+      background: #FFFFFF;
+      color: #1E3A8A;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 6px 18px;
+      height: 38px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+      transition: transform 0.2s var(--ease-snappy), background 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .nav-resume-btn:hover {
+      background: #F1F5F9;
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+    }
+
+    .nav-cta-btn {
+      background: var(--accent-yellow);
+      color: #0F172A;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 6px 20px;
+      height: 38px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      border: 2px solid #FFFFFF;
+      transition: transform 0.2s var(--ease-snappy), background 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .nav-cta-btn:hover {
+      background: #FFFFFF;
+      transform: scale(1.05) translateY(-2px);
+    }
+
+    /* ==========================================================================
+       PAGE CONTAINER & FLOATING SECTION CARDS
+       ========================================================================== */
+    .portfolio-container {
+      width: 100%;
+      max-width: 1180px;
+      padding: 32px 24px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+      position: relative;
+    }
+
+    /* Elevated Section Cards */
+    .section-card {
+      position: relative;
+      background-color: var(--bg-primary);
+      border-radius: 32px;
+      padding: 80px 64px;
+      box-shadow: var(--shadow-navy-card);
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      scroll-margin-top: 110px;
+      height: auto;
+      min-height: auto;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s ease;
+    }
+
+    .section-card:hover {
+      box-shadow: var(--shadow-navy-card-hover);
+    }
+
+    /* Headings & Subtitles (Crisp Geometric Sans) */
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.3rem, 4.4vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--text-white);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-yellow);
+      margin-bottom: 26px;
+    }
+
+    .body-copy {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: #F1F5F9;
+      letter-spacing: -0.005em;
+      font-weight: 400;
+    }
+
+    .body-copy p + p {
+      margin-top: 16px;
+    }
+
+    .body-copy strong {
+      color: #FFFFFF;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-color: rgba(255, 210, 63, 0.65);
+      text-underline-offset: 4px;
+    }
+
+    /* Hand-lettered Doodle Micro-Notes */
+    .doodle-note {
+      font-family: var(--font-hand);
+      font-size: 1.55rem;
+      line-height: 1.15;
+      color: var(--text-white);
+      position: absolute;
+      pointer-events: none;
+      z-index: 5;
+      text-shadow: 1px 2px 3px rgba(0,0,0,0.3);
+    }
+
+    .doodle-arrow-svg {
+      position: absolute;
+      stroke: var(--doodle-stroke);
+      stroke-width: var(--doodle-width);
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
+      filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.25));
+    }
+
+    /* Scroll-Drawn SVG System */
+    .draw-path {
+      will-change: stroke-dashoffset;
+    }
+
+    .doodle-badge-loop {
+      position: absolute;
+      top: -8px;
+      left: -12px;
+      width: calc(100% + 24px);
+      height: calc(100% + 16px);
+      pointer-events: none;
+      overflow: visible;
+      z-index: 2;
+    }
+
+    /* ==========================================================================
+       SECTION 1: HERO / COVER (Source Anchor Slot)
+       ========================================================================== */
+    .hero-container {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      padding: 10px 0 20px;
+    }
+
+    .hero-title-group {
+      position: relative;
+      z-index: 2;
+      margin-top: 48px;
+    }
+
+    .big-name-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.8rem, 7.5vw, 5.8rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+      color: var(--text-white);
+      text-transform: uppercase;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: #E0E7FF;
+      max-width: 520px;
+      margin-top: 18px;
+      font-weight: 400;
+    }
+
+    /* Hero Quick Stat Summary Strip */
+    .hero-stats-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .hero-stat-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1.5px solid rgba(255, 255, 255, 0.28);
+      padding: 7px 18px;
+      border-radius: 999px;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero-stat-pill .stat-highlight {
+      color: var(--accent-yellow);
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    /* Hero Avatar Anchor Slot (Container A) */
+    .hero-character-box {
+      width: 100%;
+      max-width: 360px;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      margin: 10px auto 0;
+    }
+
+    /* Shared Flying Avatar Element */
+    .flying-avatar-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    .flying-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.38);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      background: #1E3A8A;
+      pointer-events: auto;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* ==========================================================================
+       SECTION 2: ABOUT ME (Destination Anchor Slot)
+       ========================================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .profile-card {
+      background: var(--bg-card);
+      padding: 28px 24px;
+      border-radius: 22px;
+      box-shadow: var(--shadow-sticker);
+      text-align: center;
+      transform: rotate(-2deg);
+      transition: transform 0.3s var(--ease-snappy);
+    }
+
+    .profile-card:hover {
+      transform: rotate(0deg) scale(1.02);
+    }
+
+    /* About Avatar Anchor Slot (Container B) */
+    .profile-avatar-box {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      background: rgba(30, 58, 138, 0.1);
+      overflow: hidden;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px dashed rgba(30, 58, 138, 0.3);
+      position: relative;
+    }
+
+    .profile-avatar-placeholder {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: #64748B;
+      opacity: 0;
+    }
+
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--text-dark);
+    }
+
+    .profile-sub {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      color: var(--text-dark-muted);
+      margin-top: 4px;
+    }
+
+    /* Enhanced Education Typography & Layout */
+    .edu-chip {
+      margin-top: 18px;
+      padding: 18px 20px;
+      background: #F8FAFC;
+      border-radius: 18px;
+      border: 1.5px solid #E2E8F0;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .edu-degree {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      color: #0F172A;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .edu-sub {
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .edu-metric {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      color: #1E293B;
+    }
+
+    .edu-certs {
+      font-family: var(--font-sans);
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: #1E293B;
+      margin-top: 6px;
+      padding-top: 8px;
+      border-top: 1.5px dashed #CBD5E1;
+      line-height: 1.45;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .edu-certs-tag {
+      background: #E2E8F0;
+      color: #0F172A;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================================
+       SECTION 3: REBUILT SKILLS SECTION (Unified List with Real Brand Logos)
+       ========================================================================== */
+    .skills-unified-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .tech-chip {
+      background: var(--bg-card);
+      color: var(--text-dark);
+      border-radius: 18px;
+      padding: 12px 24px;
+      font-family: var(--font-body);
+      font-size: 1.22rem;
+      font-weight: bold;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      cursor: grab;
+      user-select: none;
+      will-change: transform;
+      transform-origin: center center;
+    }
+
+    .tech-chip:active {
+      cursor: grabbing;
+    }
+
+    .tech-chip-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #F1F5F9;
+      padding: 5px;
+    }
+
+    .tech-chip-icon-box.dark {
+      background: #181717;
+    }
+
+    .tech-chip-icon-box svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Dual icon container for Git & GitHub */
+    .dual-icon-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .dual-icon-box .mini-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      background: #F1F5F9;
+    }
+
+    /* Plain Text-Only Chip for Google Antigravity (No Fabricated Logo) */
+    .tech-chip.text-only-chip {
+      padding: 14px 26px;
+      background: var(--bg-card);
+      border: 2px dashed rgba(30, 58, 138, 0.3);
+      color: #0F172A;
+    }
+
+    /* ==========================================================================
+       TRANSITION POSTER BANNER
+       ========================================================================== */
+    .poster-slide-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+      padding: 16px 0;
+    }
+
+    .poster-giant-text {
+      font-family: var(--font-display);
+      font-size: clamp(3.4rem, 6.2vw, 5.6rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      max-width: 900px;
+    }
+
+    .giant-drawn-arrow {
+      width: 100%;
+      max-width: 640px;
+      height: 80px;
+    }
+
+    /* ==========================================================================
+       SECTIONS 4 & 5: CLIENT WORK
+       ========================================================================== */
+    .project-case-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .project-details {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .feature-list li {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .feature-list li::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      color: var(--accent-yellow);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .feature-list strong {
+      color: white;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      text-decoration: none;
+    }
+
+    .project-cards-island {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      position: relative;
+      margin-top: 8px;
+    }
+
+    .sample-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: var(--shadow-sticker);
+      transition: all 0.3s var(--ease-snappy);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .sample-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    }
+
+    /* Browser Window Mockup Frame */
+    .browser-frame {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 12px;
+      background: #0F172A;
+      border: 1px solid #334155;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .browser-header {
+      height: 24px;
+      background: #1E293B;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 8px;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .window-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+    .window-dot.red { background: #EF4444; }
+    .window-dot.yellow { background: #F59E0B; }
+    .window-dot.green { background: #10B981; }
+
+    .browser-url-pill {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      color: #94A3B8;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 2px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .browser-screen {
+      flex: 1;
+      width: 100%;
+      background: #090D16;
+      position: relative;
+      overflow: hidden;
+      display: block;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .browser-screen.is-dragging {
+      cursor: grabbing;
+    }
+
+    .browser-screen img {
+      width: 100%;
+      height: auto;
+      min-height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    /* Screen Scroll-Preview Micro-Hint Badge */
+    .screen-scroll-hint {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      color: #F8FAFC;
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      pointer-events: none;
+      opacity: 0.9;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .browser-screen:hover .screen-scroll-hint {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    /* Phone Mockup Stage (Dedicated Portrait Device Frame with Thin Bezel) */
+    .phone-stage {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 12px;
+      background: #0B1120;
+      border: 1px solid #1E293B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      padding: 6px;
+    }
+
+    .phone-mockup-frame {
+      height: 94%;
+      aspect-ratio: 9 / 18.5;
+      background: #020617;
+      border: 2.5px solid #475569;
+      border-radius: 18px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 3px;
+    }
+
+    .phone-camera-hole {
+      width: 22px;
+      height: 4px;
+      background: #334155;
+      border-radius: 999px;
+      margin-top: 2px;
+      margin-bottom: 3px;
+      flex-shrink: 0;
+    }
+
+    .phone-screen {
+      flex: 1;
+      width: 100%;
+      border-radius: 12px;
+      background: #090D16;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .phone-home-indicator {
+      width: 28px;
+      height: 3px;
+      background: #334155;
+      border-radius: 999px;
+      margin-top: 3px;
+      margin-bottom: 1px;
+      flex-shrink: 0;
+    }
+
+    /* Screenshot Placeholder Wireframe */
+    .screenshot-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(15, 23, 42, 0.8) 100%);
+      color: #94A3B8;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .screenshot-placeholder-sub {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      color: #64748B;
+      letter-spacing: 0.02em;
+    }
+
+    .sample-preview {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0A1128;
+      color: white;
+      position: relative;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .sample-card-tag {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--text-dark);
+      padding: 2px 4px 0;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    /* SaaS Demo Videos Section (Option B) */
+    .demo-section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .production-tools-box {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .production-tools-label {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--accent-yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .production-tools-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    /* Individual Project Showcase Cards & Highlights */
+    .project-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .project-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .project-links-cluster {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .project-action-link {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      transition: transform 0.2s var(--ease-snappy), background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .project-action-link.live {
+      background: var(--accent-yellow);
+      color: #0F172A;
+      border: 1.5px solid #FFFFFF;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .project-action-link.live:hover {
+      background: #FFFFFF;
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+    }
+
+    .project-action-link.github {
+      background: rgba(15, 23, 42, 0.75);
+      color: #F8FAFC;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .project-action-link.github svg {
+      flex-shrink: 0;
+    }
+
+    .project-action-link.github:hover {
+      background: #0F172A;
+      color: var(--accent-yellow);
+      border-color: var(--accent-yellow);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+    }
+
+    .category-badge {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: var(--accent-yellow);
+      color: #0F172A;
+      padding: 6px 16px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      letter-spacing: 0.02em;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .project-stat-highlight {
+      font-family: var(--font-display);
+      font-size: 1.38rem;
+      color: var(--accent-yellow);
+      font-weight: 700;
+      margin-top: 16px;
+      letter-spacing: 0.02em;
+      text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Sticker Badges */
+    .sticker-badge {
+      position: absolute;
+      background: var(--accent-yellow);
+      color: #0F172A;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      padding: 6px 20px;
+      border-radius: 999px;
+      box-shadow: var(--shadow-sticker);
+      border: 2px dashed #0F172A;
+      transform: rotate(-6deg);
+      z-index: 10;
+      cursor: default;
+      transition: transform 0.2s var(--ease-snappy);
+    }
+
+    .sticker-badge:hover {
+      transform: rotate(0deg) scale(1.08);
+    }
+
+    /* ==========================================================================
+       SECTION 6: PERSONAL PROJECTS
+       ========================================================================== */
+    .personal-grid-wrapper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    .personal-card {
+      background: var(--bg-card);
+      color: var(--text-dark);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow-sticker);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      transition: transform 0.25s var(--ease-snappy), box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+
+    .personal-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 36px rgba(0,0,0,0.25);
+    }
+
+    .personal-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .personal-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+
+    .personal-tag {
+      font-family: var(--font-sans);
+      font-size: 0.76rem;
+      font-weight: 700;
+      background: #E0E7FF;
+      color: #3730A3;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .personal-desc {
+      font-family: var(--font-body);
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: #475569;
+    }
+
+    /* ==========================================================================
+       SECTION 8: NATIVE ON-PAGE RESUME SECTION
+       ========================================================================== */
+    .resume-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .resume-download-btn {
+      background: var(--accent-yellow);
+      color: #0F172A;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s var(--ease-snappy), background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .resume-download-btn:hover {
+      background: #FFFFFF;
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+    }
+
+    .resume-sections-container {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .resume-block {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .resume-block-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .resume-block-icon {
+      font-size: 1.4rem;
+    }
+
+    .resume-block-title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--accent-yellow);
+      text-transform: uppercase;
+    }
+
+    .resume-entry-card {
+      background: var(--bg-card);
+      color: var(--text-dark);
+      padding: 28px 32px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-sticker);
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s var(--ease-snappy);
+    }
+
+    .resume-entry-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .resume-entry-headline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .resume-entry-role {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #0F172A;
+      line-height: 1.2;
+    }
+
+    .resume-entry-org {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 600;
+      color: #475569;
+      margin-top: 3px;
+    }
+
+    .resume-entry-period {
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 700;
+      background: #E2E8F0;
+      color: #1E293B;
+      padding: 4px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .resume-edu-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .resume-meta-pill {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: #334155;
+      background: #F1F5F9;
+      padding: 4px 12px;
+      border-radius: 8px;
+      border: 1px solid #E2E8F0;
+    }
+
+    .resume-certs-row {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1E293B;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1.5px dashed #CBD5E1;
+    }
+
+    .resume-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .resume-skills-group {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      padding: 20px 22px;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .resume-group-label {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent-yellow);
+      letter-spacing: 0.02em;
+    }
+
+    .resume-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .resume-skill-tag {
+      background: #FFFFFF;
+      color: #0F172A;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .resume-entries-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .resume-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .resume-bullets li {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #334155;
+      position: relative;
+      padding-left: 22px;
+    }
+
+    .resume-bullets li::before {
+      content: "•";
+      position: absolute;
+      left: 6px;
+      color: #1E3A8A;
+      font-size: 1.3rem;
+      line-height: 1;
+      top: 0;
+    }
+
+    /* ==========================================================================
+       SECTION 7: CONTACT SECTION
+       ========================================================================== */
+    .contact-layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .contact-card-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 2px dashed rgba(255, 255, 255, 0.4);
+      border-radius: 24px;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-link-pill {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg-card);
+      color: var(--text-dark);
+      padding: 16px 22px;
+      border-radius: 16px;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      text-decoration: none;
+      transition: all 0.2s var(--ease-snappy);
+    }
+
+    .contact-link-pill:hover {
+      background: var(--accent-yellow);
+      transform: translateX(6px);
+    }
+
+    .contact-pill-icon {
+      font-family: var(--font-sans);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--bg-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* Floating Animations */
+    @keyframes floatSlight {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .animate-float {
+      animation: floatSlight 4s ease-in-out infinite;
+    }
+
+    /* Footer Note on Cream Canvas */
+    .footer-note {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #475569;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    /* ======================================================================
+       RESPONSIVE DESIGN — COMPREHENSIVE MULTI-BREAKPOINT SYSTEM
+       ====================================================================== */
+
+    /* ------- BREAKPOINT 1: Large Tablet / Small Desktop (≤1100px) ------- */
+    @media (max-width: 1100px) {
+      .sticky-nav {
+        max-width: 960px;
+        padding: 8px 16px;
+        gap: 12px;
+      }
+      .nav-links {
+        gap: 14px;
+      }
+      .nav-link {
+        font-size: 0.95rem;
+      }
+      .nav-resume-btn,
+      .nav-cta-btn {
+        font-size: 0.95rem;
+        padding: 5px 14px;
+        height: 36px;
+      }
+      .portfolio-container {
+        max-width: 960px;
+        padding: 28px 20px 80px;
+      }
+      .section-card {
+        padding: 64px 48px;
+      }
+      .hero-container {
+        gap: 32px;
+      }
+      .about-grid {
+        grid-template-columns: 280px 1fr;
+        gap: 40px;
+      }
+      .project-case-grid {
+        gap: 40px;
+      }
+    }
+
+    /* ------- BREAKPOINT 2: Tablet (≤900px) ------- */
+    @media (max-width: 900px) {
+      .sticky-nav-wrapper {
+        padding: 10px 12px 4px;
+      }
+      .sticky-nav {
+        padding: 10px 18px;
+        border-radius: 20px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-brand-name {
+        display: none;
+      }
+      .nav-brand-logo {
+        font-size: 1.6rem;
+      }
+      .portfolio-container {
+        padding: 24px 16px 80px;
+        gap: 40px;
+      }
+      .section-card {
+        padding: 48px 28px;
+        border-radius: 26px;
+      }
+      .hero-container,
+      .about-grid,
+      .project-case-grid,
+      .contact-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .hero-title-group {
+        margin-top: 56px;
+      }
+      .hero-character-box {
+        max-width: 260px;
+        order: -1;
+      }
+      .about-grid {
+        justify-items: center;
+      }
+      .profile-card {
+        max-width: 360px;
+        width: 100%;
+        transform: rotate(0deg);
+      }
+      .skills-unified-cluster {
+        gap: 12px;
+      }
+      .project-cards-island {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .personal-grid-wrapper {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .sticker-badge {
+        font-size: 1.15rem;
+        padding: 5px 14px;
+        top: 16px !important;
+        right: 20px !important;
+      }
+      .doodle-note {
+        font-size: 1.3rem;
+      }
+      /* Resume Section */
+      .resume-top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .resume-entry-card {
+        padding: 22px 20px;
+      }
+      .resume-entry-role {
+        font-size: 1.25rem;
+      }
+      .resume-entry-headline {
+        flex-direction: column;
+        gap: 10px;
+      }
+      /* Contact */
+      .contact-card-box {
+        padding: 28px 20px;
+      }
+      .contact-link-pill {
+        padding: 14px 18px;
+        font-size: 1.15rem;
+      }
+      .poster-giant-text {
+        font-size: clamp(2.6rem, 5vw, 4rem);
+      }
+      .giant-drawn-arrow {
+        height: 60px;
+      }
+      .feature-list li {
+        font-size: 1.1rem;
+      }
+      .feature-list strong {
+        font-size: 1.15rem;
+      }
+    }
+
+    /* ------- BREAKPOINT 3: Mobile (≤768px) ------- */
+    @media (max-width: 768px) {
+      .sticky-nav {
+        padding: 8px 14px;
+        gap: 8px;
+      }
+      .nav-resume-btn span {
+        display: none;
+      }
+      .nav-resume-btn {
+        padding: 6px 10px;
+        height: 34px;
+        min-width: 34px;
+        justify-content: center;
+      }
+      .nav-cta-btn {
+        font-size: 0.9rem;
+        padding: 5px 14px;
+        height: 34px;
+      }
+      .portfolio-container {
+        padding: 20px 12px 60px;
+        gap: 32px;
+      }
+      .section-card {
+        padding: 36px 20px;
+        border-radius: 22px;
+        scroll-margin-top: 80px;
+      }
+      .section-title {
+        font-size: clamp(1.8rem, 5vw, 2.6rem);
+      }
+      .section-subtitle {
+        font-size: 0.88rem;
+        letter-spacing: 0.06em;
+        margin-bottom: 18px;
+      }
+      .body-copy {
+        font-size: 1.05rem;
+        line-height: 1.65;
+      }
+      .big-name-title {
+        font-size: clamp(2.8rem, 10vw, 4.2rem);
+      }
+      .hero-tagline {
+        font-size: 1.1rem;
+        margin-top: 14px;
+      }
+      .hero-stats-strip {
+        gap: 8px;
+        margin-top: 18px;
+      }
+      .hero-stat-pill {
+        font-size: 0.9rem;
+        padding: 5px 12px;
+      }
+      .hero-stat-pill .stat-highlight {
+        font-size: 1.1rem;
+      }
+      .hero-character-box {
+        max-width: 220px;
+      }
+      .hero-title-group {
+        margin-top: 40px;
+      }
+      .about-grid {
+        gap: 24px;
+      }
+      .profile-card {
+        max-width: 320px;
+        padding: 22px 20px;
+      }
+      .edu-degree {
+        font-size: 1.25rem;
+      }
+      .edu-metric {
+        font-size: 1.1rem;
+      }
+      .edu-certs {
+        font-size: 0.85rem;
+      }
+      .tech-chip {
+        padding: 10px 18px;
+        font-size: 1.05rem;
+        gap: 10px;
+      }
+      .tech-chip-icon-box {
+        width: 28px;
+        height: 28px;
+      }
+      .dual-icon-box .mini-icon {
+        width: 24px;
+        height: 24px;
+      }
+      .project-case-grid {
+        gap: 24px;
+      }
+      .project-cards-island {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .sample-card {
+        padding: 10px;
+      }
+      .sample-card-tag {
+        font-size: 1.05rem;
+      }
+      .personal-card {
+        padding: 22px 20px;
+      }
+      .personal-title {
+        font-size: 1.5rem;
+      }
+      .personal-desc {
+        font-size: 1.05rem;
+      }
+      .project-action-link {
+        font-size: 1rem;
+        padding: 4px 12px;
+      }
+      .category-badge {
+        font-size: 0.75rem;
+        padding: 4px 12px;
+      }
+      .project-stat-highlight {
+        font-size: 1.2rem;
+      }
+      /* SaaS Demos */
+      .production-tools-label {
+        font-size: 1.15rem;
+      }
+      .production-tools-chips {
+        gap: 10px;
+      }
+      /* Resume */
+      .resume-block-title {
+        font-size: 1.3rem;
+      }
+      .resume-entry-card {
+        padding: 18px 16px;
+      }
+      .resume-entry-role {
+        font-size: 1.15rem;
+      }
+      .resume-entry-org {
+        font-size: 0.9rem;
+      }
+      .resume-entry-period {
+        font-size: 0.82rem;
+        padding: 3px 10px;
+      }
+      .resume-bullets li {
+        font-size: 0.95rem;
+        padding-left: 18px;
+      }
+      .resume-download-btn {
+        font-size: 1rem;
+        padding: 8px 18px;
+      }
+      .resume-meta-pill {
+        font-size: 0.85rem;
+      }
+      .resume-certs-row {
+        font-size: 0.85rem;
+        flex-direction: column;
+        gap: 6px;
+      }
+      /* Contact */
+      .contact-card-box {
+        padding: 22px 16px;
+        gap: 14px;
+      }
+      .contact-link-pill {
+        padding: 12px 16px;
+        font-size: 1rem;
+        gap: 12px;
+        border-radius: 14px;
+      }
+      .contact-pill-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+      }
+      /* Sticker badges */
+      .sticker-badge {
+        font-size: 1rem;
+        padding: 4px 12px;
+      }
+      .doodle-badge-loop {
+        display: none;
+      }
+      /* Footer */
+      .footer-note {
+        font-size: 1.1rem;
+      }
+      /* Poster */
+      .poster-giant-text {
+        font-size: clamp(2rem, 6vw, 3rem);
+        margin-bottom: 18px;
+      }
+      .giant-drawn-arrow {
+        height: 50px;
+      }
+    }
+
+    /* ------- BREAKPOINT 4: Small Mobile (≤480px) ------- */
+    @media (max-width: 480px) {
+      .sticky-nav-wrapper {
+        padding: 8px 8px 4px;
+      }
+      .sticky-nav {
+        padding: 6px 10px;
+        border-radius: 16px;
+        gap: 6px;
+      }
+      .nav-brand-logo {
+        font-size: 1.35rem;
+      }
+      .nav-cta-btn {
+        font-size: 0.82rem;
+        padding: 4px 10px;
+        height: 32px;
+      }
+      .nav-cta-btn span {
+        display: none;
+      }
+      .nav-cta-btn::after {
+        content: "Chat ➔";
+        font-size: 0.82rem;
+      }
+      .nav-resume-btn {
+        height: 32px;
+        padding: 4px 8px;
+        min-width: 32px;
+      }
+      .portfolio-container {
+        padding: 16px 10px 48px;
+        gap: 24px;
+      }
+      .section-card {
+        padding: 28px 16px;
+        border-radius: 18px;
+        scroll-margin-top: 60px;
+      }
+      .section-title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+        margin-bottom: 6px;
+      }
+      .section-subtitle {
+        font-size: 0.78rem;
+        margin-bottom: 14px;
+      }
+      .body-copy {
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+      .big-name-title {
+        font-size: clamp(2.2rem, 12vw, 3.2rem);
+        margin-bottom: 10px;
+      }
+      .hero-tagline {
+        font-size: 1rem;
+      }
+      .hero-stats-strip {
+        flex-direction: column;
+        gap: 6px;
+      }
+      .hero-stat-pill {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+        width: 100%;
+        justify-content: center;
+      }
+      .hero-character-box {
+        max-width: 180px;
+      }
+      .hero-title-group {
+        margin-top: 24px;
+      }
+      .doodle-note {
+        font-size: 1.1rem;
+      }
+      .doodle-arrow-svg {
+        display: none;
+      }
+      /* About */
+      .profile-card {
+        max-width: 280px;
+        padding: 18px 16px;
+        border-radius: 18px;
+      }
+      .profile-name {
+        font-size: 1.35rem;
+      }
+      .profile-sub {
+        font-size: 1rem;
+      }
+      .edu-chip {
+        padding: 14px 14px;
+        gap: 6px;
+      }
+      .edu-degree {
+        font-size: 1.1rem;
+      }
+      .edu-sub {
+        font-size: 0.82rem;
+      }
+      .edu-metric {
+        font-size: 1rem;
+      }
+      .edu-certs {
+        font-size: 0.78rem;
+        gap: 4px;
+      }
+      /* Skills */
+      .tech-chip {
+        padding: 8px 14px;
+        font-size: 0.95rem;
+        gap: 8px;
+        border-radius: 14px;
+      }
+      .tech-chip-icon-box {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        padding: 3px;
+      }
+      .dual-icon-box .mini-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 5px;
+        padding: 3px;
+      }
+      .dual-icon-box {
+        gap: 4px;
+      }
+      .tech-chip.text-only-chip {
+        padding: 10px 16px;
+      }
+      /* Project Work */
+      .project-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .project-links-cluster {
+        width: 100%;
+      }
+      .project-action-link {
+        font-size: 0.9rem;
+        padding: 4px 10px;
+      }
+      .feature-list li {
+        font-size: 0.95rem;
+        padding-left: 18px;
+      }
+      .feature-list strong {
+        font-size: 1rem;
+      }
+      .sample-card-tag {
+        font-size: 0.9rem;
+      }
+      /* Personal Projects */
+      .personal-card {
+        padding: 18px 16px;
+        gap: 14px;
+      }
+      .personal-title {
+        font-size: 1.3rem;
+      }
+      .personal-desc {
+        font-size: 0.95rem;
+      }
+      .personal-tag {
+        font-size: 0.68rem;
+      }
+      .personal-card-header {
+        flex-direction: column;
+        gap: 8px;
+      }
+      /* SaaS Demos */
+      .production-tools-label {
+        font-size: 1rem;
+      }
+      .production-tools-chips {
+        gap: 8px;
+      }
+      /* Resume */
+      .resume-sections-container {
+        gap: 24px;
+      }
+      .resume-block-title {
+        font-size: 1.1rem;
+      }
+      .resume-entry-card {
+        padding: 16px 14px;
+        border-radius: 16px;
+      }
+      .resume-entry-role {
+        font-size: 1.05rem;
+      }
+      .resume-entry-org {
+        font-size: 0.82rem;
+      }
+      .resume-bullets li {
+        font-size: 0.88rem;
+        line-height: 1.55;
+        padding-left: 16px;
+      }
+      .resume-download-btn {
+        font-size: 0.9rem;
+        padding: 7px 14px;
+      }
+      .resume-edu-meta {
+        flex-direction: column;
+        gap: 6px;
+      }
+      .resume-meta-pill {
+        font-size: 0.8rem;
+      }
+      /* Contact */
+      .contact-link-pill {
+        padding: 10px 12px;
+        font-size: 0.88rem;
+        gap: 10px;
+        border-radius: 12px;
+      }
+      .contact-pill-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+        border-radius: 8px;
+      }
+      /* Sticker badges */
+      .sticker-badge {
+        font-size: 0.85rem;
+        padding: 3px 10px;
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        left: auto !important;
+        transform: rotate(-3deg);
+        margin-bottom: 12px;
+        align-self: flex-start;
+      }
+      /* Footer */
+      .footer-note {
+        font-size: 0.95rem;
+      }
+      .poster-giant-text {
+        font-size: clamp(1.6rem, 7vw, 2.4rem);
+      }
+    }
+
+    /* ------- BREAKPOINT 5: Tiny screens (≤360px) ------- */
+    @media (max-width: 360px) {
+      .section-card {
+        padding: 22px 12px;
+        border-radius: 16px;
+      }
+      .section-title {
+        font-size: 1.4rem;
+      }
+      .big-name-title {
+        font-size: 2rem;
+      }
+      .hero-character-box {
+        max-width: 150px;
+      }
+      .profile-card {
+        max-width: 260px;
+        padding: 14px 12px;
+      }
+      .tech-chip {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        gap: 6px;
+      }
+      .personal-card {
+        padding: 14px 12px;
+      }
+      .personal-title {
+        font-size: 1.15rem;
+      }
+      .resume-entry-card {
+        padding: 14px 12px;
+      }
+      .resume-entry-role {
+        font-size: 0.95rem;
+      }
+      .resume-bullets li {
+        font-size: 0.82rem;
+      }
+      .contact-link-pill {
+        font-size: 0.8rem;
+        padding: 8px 10px;
+      }
+    }
+
+    /* ------- Touch-Friendly: Remove hover-only effects on touch devices ------- */
+    @media (hover: none) {
+      .tech-chip {
+        cursor: default;
+      }
+      .browser-screen {
+        cursor: default;
+      }
+      .sample-card:hover {
+        transform: none;
+      }
+      .personal-card:hover {
+        transform: none;
+      }
+      .section-card:hover {
+        box-shadow: var(--shadow-navy-card);
+      }
+    }
+
+    /* ------- Landscape phone (max-height ≤500px and landscape) ------- */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .section-card {
+        padding: 32px 24px;
+      }
+      .hero-container {
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 20px;
+      }
+      .hero-title-group {
+        margin-top: 16px;
+      }
+      .hero-character-box {
+        max-width: 180px;
+      }
+      .big-name-title {
+        font-size: 2.4rem;
+      }
+    }
+
+    /* ==========================================================================
+   CERTIFICATES SECTION
+   ========================================================================== */
+    .cert-grid-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 12px;
+    }
+
+    .cert-card {
+      background: var(--bg-card);
+      color: var(--text-dark);
+      border-radius: 20px;
+      padding: 26px 24px;
+      box-shadow: var(--shadow-sticker);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.25s var(--ease-snappy), box-shadow 0.25s ease;
+      cursor: default;
+    }
+
+    .cert-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
+    }
+
+    .cert-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cert-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .cert-date-pill {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #E0E7FF;
+      color: #3730A3;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .cert-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.2;
+      margin-top: 4px;
+    }
+
+    .cert-issuer {
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .cert-desc {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #475569;
+      flex-grow: 1;
+    }
+
+    .cert-verify-link {
+      font-family: var(--font-display);
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #1E3A8A;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      align-self: flex-start;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .cert-verify-link:hover {
+      color: var(--accent-orange);
+      transform: translateX(3px);
+    }
+
+    /* Responsive: stack to 2 cols then 1 col */
+    @media (max-width: 900px) {
+      .cert-grid-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .cert-grid-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .cert-card {
+        padding: 20px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       FLOATING ROUNDED INSET NAVBAR
+       ========================================================================== -->
+  <div class="sticky-nav-wrapper">
+    <nav class="sticky-nav" id="stickyNav">
+      <a href="#home" class="nav-brand">
+        <span class="nav-brand-logo">APS.</span>
+        <span class="nav-brand-name">Anuj P. Singh</span>
+      </a>
+
+      <!-- Smooth Scroll Navigation Links with Squiggle Underlines -->
+      <ul class="nav-links">
+        <li class="nav-item active" data-section="home">
+          <a class="nav-link" href="#home">
+            Home
+            <svg class="nav-squiggle" viewBox="0 0 80 10">
+              <path d="M 2 5 Q 20 1 40 5 T 78 5" />
+            </svg>
+          </a>
+        </li>
+        <li class="nav-item" data-section="about">
+          <a class="nav-link" href="#about">
+            About
+            <svg class="nav-squiggle" viewBox="0 0 80 10">
+              <path d="M 2 5 Q 20 1 40 5 T 78 5" />
+            </svg>
+          </a>
+        </li>
+        <li class="nav-item" data-section="skills">
+          <a class="nav-link" href="#skills">
+            Skills
+            <svg class="nav-squiggle" viewBox="0 0 80 10">
+              <path d="M 2 5 Q 20 1 40 5 T 78 5" />
+            </svg>
+          </a>
+        </li>
+        <!-- <li class="nav-item" data-section="work">
+          <a class="nav-link" href="#work">
+            Work
+            <svg class="nav-squiggle" viewBox="0 0 80 10">
+              <path d="M 2 5 Q 20 1 40 5 T 78 5" />
+            </svg>
+          </a>
+        </li> -->
+        <li class="nav-item" data-section="personal">
+          <a class="nav-link" href="#personal">
+            Projects
+            <svg class="nav-squiggle" viewBox="0 0 80 10">
+              <path d="M 2 5 Q 20 1 40 5 T 78 5" />
+            </svg>
+          </a>
+        </li>
+        <li class="nav-item" data-section="resume">
+          <a class="nav-link" href="#resume">
+            Resume
+            <svg class="nav-squiggle" viewBox="0 0 80 10">
+              <path d="M 2 5 Q 20 1 40 5 T 78 5" />
+            </svg>
+          </a>
+        </li>
+        <li class="nav-item" data-section="contact">
+          <a class="nav-link" href="#contact">
+            Contact
+            <svg class="nav-squiggle" viewBox="0 0 80 10">
+              <path d="M 2 5 Q 20 1 40 5 T 78 5" />
+            </svg>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Direct Contact CTA & In-Page Resume Anchor Button -->
+      <div class="nav-actions">
+        <a href="#resume" class="nav-resume-btn" title="View Resume Section">
+          📄 <span>Resume</span>
+        </a>
+        <a href="#contact" class="nav-cta-btn">
+          <span>Let's Talk</span> ➔
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ==========================================================================
+       FLOATING SECTION CARDS CONTAINER
+       ========================================================================== -->
+  <main class="portfolio-container">
+
+    <!-- ==========================================
+         SECTION 1: HERO / COVER (Source Anchor Slot)
+         ========================================== -->
+    <section class="section-card" id="home">
+      <!-- Top Left Doodle Note & Scroll-Drawn Arrow -->
+      <div class="doodle-note" style="top: 24px; left: 36px; max-width: 220px; transform: rotate(-3deg);">
+        Wait until the end.<br>I'll tell you how to reach me.
+      </div>
+      <svg class="doodle-arrow-svg draw-on-scroll" style="top: 80px; left: 150px; width: 60px; height: 70px;" viewBox="0 0 60 70">
+        <path class="draw-path" d="M 10 10 Q 40 25 35 60" />
+        <path class="draw-path" d="M 25 52 L 35 60 L 45 50" />
+      </svg>
+
+      <!-- Top Right Doodle Note & Scroll-Drawn Arrow -->
+      <div class="doodle-note" style="top: 24px; right: 48px; max-width: 200px; text-align: right; transform: rotate(4deg);">
+        Hello! 👋<br>This is my portfolio
+      </div>
+      <svg class="doodle-arrow-svg draw-on-scroll" style="top: 76px; right: 150px; width: 70px; height: 60px;" viewBox="0 0 70 60">
+        <path class="draw-path" d="M 60 10 Q 20 20 15 50" />
+        <path class="draw-path" d="M 26 42 L 15 50 L 10 38" />
+      </svg>
+
+      <div class="hero-container">
+        <div class="hero-title-group">
+          <h1 class="big-name-title">
+            Anuj Pratap<br>Singh
+          </h1>
+          <div class="section-subtitle">FULL-STACK ENGINEER &amp; PRODUCT BUILDER</div>
+          <p class="hero-tagline">
+            Full-Stack Engineer building production-grade web platforms, scalable APIs, and rapid MVPs.
+          </p>
+
+          <!-- Top Stat Summary Strip -->
+          <!-- <div class="hero-stats-strip">
+            <div class="hero-stat-pill">
+              <span class="stat-highlight">180+</span> Live Users
+            </div>
+            <div class="hero-stat-pill">
+              <span class="stat-highlight">3</span> Client Projects
+            </div>
+            <div class="hero-stat-pill">
+              <span class="stat-highlight">4</span> Personal Builds
+            </div>
+          </div> -->
+        </div>
+
+        <!-- Hero Avatar Anchor Slot (Container A) -->
+        <div class="hero-character-box" id="heroAvatarSlot">
+          <!-- The Flying Shared Image Element -->
+          <div class="flying-avatar-wrapper" id="flyingAvatar">
+            <!-- <img 
+              src="assets/Profile Picture with glasses.jpeg" 
+              alt="Anuj P. Singh Portrait" 
+              class="flying-avatar-img"
+              id="avatarImgElement"
+            /> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Teaser Doodle Note (Standardized CTA) -->
+      <a href="#work" class="doodle-note" style="bottom: 28px; left: 60px; transform: rotate(-2deg); text-decoration: none; pointer-events: auto; cursor: pointer;">
+        View My Work ➔
+      </a>
+    </section>
+
+    <!-- ==========================================
+         SECTION 2: ABOUT ME (Destination Anchor Slot)
+         ========================================== -->
+    <section class="section-card" id="about">
+      <svg class="doodle-arrow-svg" style="top: 36px; left: 90px; width: 60px; height: 50px;" viewBox="0 0 60 50">
+        <path d="M 50 10 Q 20 15 15 40" />
+        <path d="M 25 35 L 15 40 L 10 30" />
+      </svg>
+
+      <div class="about-grid">
+        <div class="profile-card">
+          <!-- About Avatar Target Slot (Container B) -->
+          <div class="profile-avatar-box" id="aboutAvatarSlot">
+            <span class="profile-avatar-placeholder">Avatar Destination</span>
+          </div>
+          
+          <div class="profile-name">Anuj Pratap Singh</div>
+          <div class="profile-sub">Lovely Professional University</div>
+          
+          <div class="edu-chip">
+            <div class="edu-degree">🎓 B.Tech Computer Science</div>
+            <div class="edu-sub">Lovely Professional University · Aug 2025 – Present</div>
+            <div class="edu-metric">CGPA: <strong>9.09 / 10</strong></div>
+            <div class="edu-certs">
+              <span class="edu-certs-tag">Certifications</span>
+              <span>Introduction to Artificial Intelligence (Infosys Springboard) · Time Management Tips (LinkedIn)</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="section-title">ABOUT ME</h2>
+          <div class="section-subtitle">FULL-STACK ENGINEER · SCALABLE SYSTEMS · RAPID EXECUTION</div>
+          <div class="body-copy">
+            <p>
+              Full-Stack Engineer and Computer Science student at Lovely Professional University. I architect end-to-end web &amp; applications with a focus on high performance, bulletproof security, and fast execution.
+            </p>
+            <p>
+              Recently architected and deployed a <strong>production-grade managed investment platform</strong> — full web portal and admin management dashboard — delivered solo within 30 days. Currently in testing phase. I also produce <strong>AI-assisted product demo videos</strong> for SaaS companies, handling the full pipeline from script and asset generation to sound design and final delivery in rapid 3-day sprints.
+            </p>
+            <p>
+              Across client deliverables and independent software, I focus on building resilient software architectures — from real-time social listening scrapers and offline-first PWAs to custom microcontroller automation systems.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3: REBUILT SKILLS SECTION (7 Real Items, Single List)
+         ========================================== -->
+    <section class="section-card" id="skills">
+      <h2 class="section-title">WHAT I BUILD &amp; WHAT I USE</h2>
+      <div class="section-subtitle">CORE TECHNICAL STACK &amp; DEV TOOLING</div>
+
+      <div class="skills-unified-cluster">
+        
+        <!-- 1. Git & GitHub (Real Git + GitHub Marks) -->
+        <div class="tech-chip">
+          <div class="dual-icon-box">
+            <div class="mini-icon">
+              <!-- Official Git SVG -->
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#F05032"><path d="M2.59 13.41l7.83 7.83a2.49 2.49 0 0 0 3.52 0l7.46-7.46a2.49 2.49 0 0 0 0-3.52L13.56 2.42a2.49 2.49 0 0 0-3.52 0L2.59 9.88a2.49 2.49 0 0 0 0 3.53zm8.9-8.49a1 1 0 0 1 1.41 0l7.46 7.46a1 1 0 0 1 0 1.41l-7.46 7.46a1 1 0 0 1-1.41 0L3.66 13.4a1 1 0 0 1 0-1.41l7.83-7.07zm-2.07 9.07a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm4.5 4.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-2.25-6.75a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+            </div>
+            <div class="mini-icon" style="background:#181717;">
+              <!-- Official GitHub Octocat SVG -->
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </div>
+          </div>
+          <span>Git &amp; GitHub</span>
+        </div>
+
+        <!-- 2. React (Real React Atom Logo) -->
+        <div class="tech-chip">
+          <div class="tech-chip-icon-box dark" style="background:#20232A;">
+            <svg viewBox="-11.5 -10.23174 23 20.46348" width="22" height="22">
+              <circle cx="0" cy="0" r="2.05" fill="#61DAFB"/>
+              <g stroke="#61DAFB" stroke-width="1" fill="none">
+                <ellipse rx="11" ry="4.2"/>
+                <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+                <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+              </g>
+            </svg>
+          </div>
+          <span>React</span>
+        </div>
+
+        <!-- 3. C++ (Real C++ ISO Hexagon Logo) -->
+        <div class="tech-chip">
+          <div class="tech-chip-icon-box" style="background:#00599C;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF">
+              <path d="M22.376 10.418l-8.62-4.978a3.178 3.178 0 0 0-3.18 0l-8.62 4.978a3.18 3.18 0 0 0-1.59 2.755v9.954a3.18 3.18 0 0 0 1.59 2.754l8.62 4.978a3.18 3.18 0 0 0 3.18 0l8.62-4.978a3.18 3.18 0 0 0 1.59-2.754v-9.954a3.18 3.18 0 0 0-1.59-2.755zm-10.21 16.3a2.38 2.38 0 0 1-2.38-2.38 2.38 2.38 0 0 1 2.38-2.38 2.38 2.38 0 0 1 2.38 2.38 2.38 2.38 0 0 1-2.38 2.38zm7.14-7.14h-1.59v1.59h-1.58v-1.59h-1.59v-1.58h1.59V16.4h1.58v1.59h1.59zm-6.35 0h-1.59v1.59h-1.58v-1.59h-1.59v-1.58h1.59V16.4h1.58v1.59h1.59z"/>
+            </svg>
+          </div>
+          <span>C++</span>
+        </div>
+
+        <!-- 4. Python (Real Python Interlocking Snakes Logo) -->
+        <div class="tech-chip">
+          <div class="tech-chip-icon-box" style="background:#F8FAFC;">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path fill="#3776AB" d="M11.91 0c-1.8 0-3.5.16-4.95.45C4.07 1.05 3.8 2.2 3.8 4.2v2.45h8.2v1.2H3.8C1.7 7.85 0 9.55 0 11.95c0 2.45 1.75 4.15 3.85 4.15h1.85v-2.5c0-1.75 1.45-3.2 3.2-3.2h8.2c1.7 0 3.1-1.4 3.1-3.1V4.2c0-2-1.7-3.75-3.8-4.15A27.8 27.8 0 0 0 11.91 0zm-2.7 2.15c.65 0 1.2.55 1.2 1.2s-.55 1.2-1.2 1.2-1.2-.55-1.2-1.2.55-1.2 1.2-1.2z"/>
+              <path fill="#FFD438" d="M20.15 7.85h-1.85v2.5c0 1.75-1.45 3.2-3.2 3.2H6.9c-1.7 0-3.1 1.4-3.1 3.1v3.1c0 2 1.7 3.75 3.8 4.15 1.45.3 3.15.45 4.95.45 1.8 0 3.5-.15 4.95-.45 2.89-.6 3.16-1.75 3.16-3.75v-2.45h-8.2v-1.2h8.2c2.1 0 3.8-1.7 3.8-4.1 0-2.45-1.75-4.15-3.85-4.15zm-5.36 13.95c-.65 0-1.2-.55-1.2-1.2s.55-1.2 1.2-1.2 1.2.55 1.2 1.2-.55 1.2-1.2 1.2z"/>
+            </svg>
+          </div>
+          <span>Python</span>
+        </div>
+
+        <!-- 5. PostgreSQL (Real PostgreSQL Slonik Logo) -->
+        <div class="tech-chip">
+          <div class="tech-chip-icon-box" style="background:#336791;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#FFFFFF">
+              <path d="M12.02 0c-3.1 0-5.7 1.46-7.23 3.8-1.02-.13-2.03-.04-2.9.33-.8.34-1.45.92-1.75 1.74-.32.88-.16 2.06.66 3.96.6 1.38 1.4 2.65 2.17 3.65.1.84.4 1.77.93 2.7.75 1.3 1.78 2.45 2.92 3.27 1.5 1.07 3.2 1.7 4.9 1.78.2.3.4.6.6.85.27.35.58.65.9.87.5.34 1.08.45 1.63.3.4-.1.74-.34 1-.68.32-.42.45-.98.37-1.57-.1-.7-.5-1.56-1.12-2.35 1.1-.38 2.05-1.03 2.76-1.9.7-.86 1.07-1.92 1.04-3.03-.03-1.1-.5-2.22-1.32-3.15-.8-.9-1.9-1.55-3.1-1.85-.3-.7-.7-1.4-1.2-2-.9-1.1-2.1-1.9-3.4-2.35-.9-.3-1.9-.4-2.8-.2.7-.8 1.6-1.4 2.6-1.75 1-.35 2.1-.4 3.2-.1 1.1.26 2.1.8 2.9 1.54.8.74 1.4 1.68 1.7 2.74.3 1.05.3 2.2 0 3.27-.3 1.06-.9 2-1.7 2.74-.8.73-1.8 1.22-2.9 1.4-.4.07-.8.1-1.2.1z"/>
+            </svg>
+          </div>
+          <span>PostgreSQL</span>
+        </div>
+
+        <!-- 6. Claude (Real Anthropic / Claude Starburst Mark) -->
+        <div class="tech-chip">
+          <div class="tech-chip-icon-box" style="background:#D97706;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF">
+              <path d="M17.472 2.046a.75.75 0 0 0-.825.132L12 6.55 7.353 2.178a.75.75 0 0 0-1.14.342l-2.02 5.568a.75.75 0 0 0 .156.786L8.47 13.5l-4.12 4.626a.75.75 0 0 0-.157.786l2.02 5.568a.75.75 0 0 0 1.14.342L12 20.45l4.647 4.372a.75.75 0 0 0 1.14-.342l2.02-5.568a.75.75 0 0 0-.156-.786L15.53 13.5l4.12-4.626a.75.75 0 0 0 .157-.786l-2.02-5.568a.75.75 0 0 0-.315-.474z"/>
+            </svg>
+          </div>
+          <span>Claude <span style="font-size: 0.95rem; font-weight: normal; color: #64748B;">(AI-assisted dev)</span></span>
+        </div>
+
+        <!-- 7. Google Antigravity (NO Icon Available — Clean Text-Only Chip) -->
+        <div class="tech-chip text-only-chip">
+          <span>Google Antigravity <span style="font-size: 0.95rem; font-weight: normal; color: #64748B;">(AI-assisted dev)</span></span>
+        </div>
+
+      </div>
+
+      <div class="doodle-note" style="bottom: 28px; right: 60px; font-size: 1.45rem; transform: rotate(-3deg);">
+        Fast turnaround &amp; production ready ⚡
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 4: SELECTED WORK (Section Opener)
+         ========================================== -->
+    <section class="section-card" id="personal">
+      <h2 class="section-title">Projects</h2>
+      <div class="section-subtitle" style="margin-bottom: 0;">Team Projects &amp; COMMERCIAL DELIVERABLES</div>
+    </section>
+
+    <!-- Client Project 1: Managed Investment Platform -->
+    <!-- <section class="section-card project-showcase-card" id="investment">
+      <div class="sticker-badge draw-on-scroll" style="top: 32px; right: 52px; position: absolute;">
+        <span>180+ Live Users · Solo Build</span>
+        <svg class="doodle-badge-loop" viewBox="0 0 260 60" fill="none">
+          <path class="draw-path" d="M 12 30 C 12 12, 130 4, 245 10 C 258 22, 252 48, 200 54 C 110 62, 12 54, 8 32 C 5 16, 75 7, 140 6" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="project-case-grid">
+        <div class="project-details">
+          <div>
+            <div class="project-header-row">
+              <div class="project-title-group">
+                <h2 class="section-title" style="font-size: 2.8rem; margin-bottom: 0;">MANAGED INVESTMENT PLATFORM</h2>
+              </div>
+              <div class="project-links-cluster">
+                <a href="https://thefundnest.com/" target="_blank" rel="noopener noreferrer" class="project-action-link live" title="View Live Platform">
+                  <span>Live Platform</span> ↗
+                </a>
+              </div>
+            </div>
+            <div class="section-subtitle" style="margin-top: 8px; margin-bottom: 20px;">FREELANCE CLIENT PROJECT — FULL-STACK DEVELOPER</div>
+          </div>
+          
+          <p class="body-copy">
+            Built solo in one month — web app, Android app, and admin panel. Live with around 180+ users, addressing minor fixes as they arise.
+          </p>
+
+          <ul class="feature-list">
+            <li><strong>Stack:</strong> NestJS, PostgreSQL, Prisma on the backend · Next.js/React on web · React Native (Expo) on mobile</li>
+            <li><strong>Security:</strong> JWT + bcrypt login, TOTP 2FA, rate limiting, KYC docs via AWS S3, SMS alerts via Twilio</li>
+            <li><strong>Sourced through a referral</strong> — still the sole point of contact on the product</li>
+          </ul>
+        </div>
+
+        <div class="project-cards-island">
+          <!-1. Web Dashboard (Browser Window Mockup with Real Screenshot)
+          <div class="sample-card">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="window-dots">
+                  <span class="window-dot red"></span>
+                  <span class="window-dot yellow"></span>
+                  <span class="window-dot green"></span>
+                </div>
+                <div class="browser-url-pill">app.investment.io</div>
+              </div>
+              <div class="browser-screen">
+                <img src="assets/screenshots/investment-landing.png" alt="Web Portal Interface" />
+              </div>
+            </div>
+            <div class="sample-card-tag">Next.js Web Client</div>
+          </div>
+
+          <!-2. Mobile App (Portrait Phone Frame Mockup)
+          <div class="sample-card">
+            <div class="phone-stage">
+              <div class="phone-mockup-frame">
+                <div class="phone-camera-hole"></div>
+                <div class="phone-screen">
+                  <div class="screenshot-placeholder">
+                    <div style="font-size: 1rem;">Mobile App</div>
+                    <div class="screenshot-placeholder-sub">[Portrait Ready]</div>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
+              </div>
+            </div>
+            <div class="sample-card-tag">Android App (Expo)</div>
+          </div>
+
+          <!-3. Admin Panel (Browser Window Mockup with Real Screenshot)
+          <div class="sample-card">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="window-dots">
+                  <span class="window-dot red"></span>
+                  <span class="window-dot yellow"></span>
+                  <span class="window-dot green"></span>
+                </div>
+                <div class="browser-url-pill">admin.investment.io</div>
+              </div>
+              <div class="browser-screen">
+                <img src="assets/screenshots/investment-webapp.png" alt="Admin Management Dashboard" />
+              </div>
+            </div>
+            <div class="sample-card-tag">Admin Management</div>
+          </div>
+
+          4. Security & KYC (Browser Window Mockup)
+          <div class="sample-card">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="window-dots">
+                  <span class="window-dot red"></span>
+                  <span class="window-dot yellow"></span>
+                  <span class="window-dot green"></span>
+                </div>
+                <div class="browser-url-pill">auth.investment.io</div>
+              </div>
+              <div class="browser-screen">
+                <div class="screenshot-placeholder">
+                  <div>Security &amp; KYC</div>
+                  <div class="screenshot-placeholder-sub">[Screenshot Ready]</div>
+                </div>
+              </div>
+            </div>
+            <div class="sample-card-tag">Security &amp; KYC</div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- ==========================================
+         SECTION 5: CLIENT WORK 2 - AI-ASSISTED SAAS DEMO VIDEOS (Option B)
+         ========================================== -->
+    <section class="section-card" id="demos">
+      <!-- <div class="sticker-badge" style="top: 32px; right: 52px;">3-Day Turnaround</div> -->
+
+      <div class="demo-section-content">
+        <h2 class="section-title" style="font-size: 2.8rem;">SMART WATER QUALITY MONITORING SYSTEM</h2>
+        <div class="section-subtitle" style="margin-bottom: 20px;">ACADEMIC PROJECT — ARDUINO-BASED WATER MONITORING</div>
+        
+        <p class="body-copy" style="max-width: 880px;">
+          Developed a smart system to monitor water quality by analyzing important water parameters using sensors and providing real-time alerts.
+        </p>
+
+        <ul class="feature-list" style="margin-top: 8px; max-width: 920px;">
+          <li><strong>Water Quality Monitoring:</strong> Uses TDS and turbidity sensors to measure and assess water conditions.</li>
+          <li><strong>Real-Time Alerts:</strong> Integrated LED indicators and a buzzer to provide visual and audio alerts based on detected water quality.</li>
+          <li><strong>Hardware–Software Integration:</strong> Built and tested the system using Arduino, combining sensor data collection with programmed monitoring logic.</li>
+        </ul>
+
+        <!-- Horizontal Row of Production Tool Chips -->
+        <div class="production-tools-box">
+          <div class="production-tools-label">TOOLS USED IN DEVELOPMENT:</div>
+          <div class="production-tools-chips">
+            <!-- Arduino -->
+            <div class="tech-chip">
+              <!-- <div class="tech-chip-icon-box" style="background:#D97706;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF">
+                  <path d="M17.472 2.046a.75.75 0 0 0-.825.132L12 6.55 7.353 2.178a.75.75 0 0 0-1.14.342l-2.02 5.568a.75.75 0 0 0 .156.786L8.47 13.5l-4.12 4.626a.75.75 0 0 0-.157.786l2.02 5.568a.75.75 0 0 0 1.14.342L12 20.45l4.647 4.372a.75.75 0 0 0 1.14-.342l2.02-5.568a.75.75 0 0 0-.156-.786L15.53 13.5l4.12-4.626a.75.75 0 0 0 .157-.786l-2.02-5.568a.75.75 0 0 0-.315-.474z"/>
+                </svg>
+              </div> -->
+              <span>Arduino</span>
+            </div>
+
+            <!-- C/C++ -->
+            <div class="tech-chip">
+              <!-- <div class="tech-chip-icon-box" style="background:#0F172A;">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path fill="#38BDF8" d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z"/>
+                </svg>
+              </div> -->
+              <span>C/C++</span>
+            </div>
+
+            <!-- TDS Sensor -->
+            <div class="tech-chip">
+              <!-- <div class="tech-chip-icon-box" style="background:#0284C7;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF">
+                  <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 3v10h16V7H4zm6 2l6 3-6 3V9z"/>
+                </svg>
+              </div> -->
+              <span>TDS Sensor</span>
+            </div>
+
+            <!-- Turbidity Sensor -->
+            <div class="tech-chip">
+              <!-- <div class="tech-chip-icon-box" style="background:#0284C7;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF">
+                  <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 3v10h16V7H4zm6 2l6 3-6 3V9z"/>
+                </svg>
+              </div> -->
+              <span>Turbidity Sensor</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 6: PERSONAL PROJECTS (4 Full-Width Project Blocks)
+         ========================================== -->
+    <!-- Opener Header Card -->
+    <!-- <section class="section-card" id="personal">
+      <h2 class="section-title">PERSONAL PROJECTS</h2>
+      <div class="section-subtitle" style="margin-bottom: 0;">HUNTLY · VELO · ZENTRO · SMART HOME SYSTEM</div>
+    </section>
+
+    <!- Project 1: Huntly --
+    <section class="section-card project-showcase-card">
+      <div class="project-case-grid">
+        <div class="project-details">
+          <div>
+            <div class="project-header-row">
+              <div class="project-title-group">
+                <h3 class="section-title" style="font-size: 2.6rem; margin-bottom: 0;">HUNTLY</h3>
+                <span class="category-badge">AI Lead Gen &amp; Social Listening</span>
+              </div>
+              <div class="project-links-cluster">
+                <a href="https://tryhuntly.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-action-link live" title="View Live Demo">
+                  <span>Live Demo</span> ↗
+                </a>
+                <a href="https://github.com/bhattasubash/Huntly" target="_blank" rel="noopener noreferrer" class="project-action-link github" title="View Source on GitHub">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                  </svg>
+                  <span>GitHub</span>
+                </a>
+              </div>
+            </div>
+            <p class="body-copy">
+              Automated Reddit lead-generation and social intelligence platform. Analyzes target domains, extracts ICP buyer intent, and continuously monitors relevant subreddits with semantic matching algorithms to draft human-like contextual responses and drive qualified organic acquisition.
+            </p>
+          </div>
+          <div class="project-stat-highlight">
+            ✓ Pulled 27–30 high-fit posts on initial deployment
+          </div>
+        </div>
+
+        <div>
+          <div class="browser-frame">
+            <div class="browser-header">
+              <div class="window-dots">
+                <span class="window-dot red"></span>
+                <span class="window-dot yellow"></span>
+                <span class="window-dot green"></span>
+              </div>
+              <div class="browser-url-pill">huntly.app</div>
+            </div>
+            <div class="browser-screen">
+              <img src="assets/screenshots/huntly.png" alt="Huntly AI Lead Gen Interface" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!- Project 2: Velo --
+    <section class="section-card project-showcase-card">
+      <div class="project-case-grid">
+        <div class="project-details">
+          <div>
+            <div class="project-header-row">
+              <div class="project-title-group">
+                <h3 class="section-title" style="font-size: 2.6rem; margin-bottom: 0;">VELO</h3>
+                <span class="category-badge">PWA Study Companion</span>
+              </div>
+              <div class="project-links-cluster">
+                <a href="https://getvelo.vercel.app/#/" target="_blank" rel="noopener noreferrer" class="project-action-link live" title="View Live App">
+                  <span>Live App</span> ↗
+                </a>
+                <a href="https://github.com/bhattasubash/Velo" target="_blank" rel="noopener noreferrer" class="project-action-link github" title="View Source on GitHub">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                  </svg>
+                  <span>GitHub</span>
+                </a>
+              </div>
+            </div>
+            <p class="body-copy">
+              Combines structured task tracking with an integrated focus timer, markdown notes, and productivity workflows. Built with an offline-first architecture via IndexedDB and service workers, eliminating app switching and latency during deep work blocks.
+            </p>
+          </div>
+          <div class="project-stat-highlight">
+            ✓ Offline-first architecture via IndexedDB + service workers for zero-latency local state persistence
+          </div>
+        </div>
+
+        <div>
+          <div class="browser-frame">
+            <div class="browser-header">
+              <div class="window-dots">
+                <span class="window-dot red"></span>
+                <span class="window-dot yellow"></span>
+                <span class="window-dot green"></span>
+              </div>
+              <div class="browser-url-pill">velo.app</div>
+            </div>
+            <div class="browser-screen">
+              <img src="assets/screenshots/velo.png" alt="Velo Study Companion Interface" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!- Project 3: Zentro --
+    <section class="section-card project-showcase-card">
+      <div class="project-case-grid">
+        <div class="project-details">
+          <div>
+            <div class="project-header-row">
+              <div class="project-title-group">
+                <h3 class="section-title" style="font-size: 2.6rem; margin-bottom: 0;">ZENTRO</h3>
+                <span class="category-badge">Idea-to-MVP Platform</span>
+              </div>
+              <div class="project-links-cluster">
+                <a href="https://tryzentro.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-action-link live" title="View Live Platform">
+                  <span>Live Demo</span> ↗
+                </a>
+                <a href="https://github.com/bhattasubash/ZENTRO" target="_blank" rel="noopener noreferrer" class="project-action-link github" title="View Source on GitHub">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                  </svg>
+                  <span>GitHub</span>
+                </a>
+              </div>
+            </div>
+            <p class="body-copy">
+              Product scoping and execution framework that converts raw product concepts into structured 14-day development roadmaps. Automates feature prioritization, scope cutting, and ship date milestones with an interactive progress dashboard.
+            </p>
+          </div>
+          <div class="project-stat-highlight">
+            ✓ 14-Day MVP scoping &amp; milestone progress tracker
+          </div>
+        </div>
+
+        <div>
+          <div class="browser-frame">
+            <div class="browser-header">
+              <div class="window-dots">
+                <span class="window-dot red"></span>
+                <span class="window-dot yellow"></span>
+                <span class="window-dot green"></span>
+              </div>
+              <div class="browser-url-pill">zentro.dev</div>
+            </div>
+            <div class="browser-screen">
+              <img src="assets/screenshots/zentro.png" alt="Zentro MVP Platform Interface" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!- Project 4: Smart Home System --
+    <section class="section-card project-showcase-card">
+      <div class="project-case-grid">
+        <div class="project-details">
+          <div>
+            <div class="project-header-row">
+              <div class="project-title-group">
+                <h3 class="section-title" style="font-size: 2.6rem; margin-bottom: 0;">SMART HOME SYSTEM</h3>
+                <span class="category-badge">ECE Hardware (ESP32)</span>
+              </div>
+            </div>
+            <p class="body-copy">
+              Embedded IoT microcontroller project integrating MQ2 gas detection, LDR ambient lighting, and DHT temperature/humidity sensors with custom relay driver circuits. Automates environmental controls and triggers immediate local alarms and automated email alerts on hazard thresholds.
+            </p>
+          </div>
+          <div class="project-stat-highlight">
+            ✓ Defended in university viva presentation
+          </div>
+        </div>
+
+        <div>
+          <div class="browser-frame">
+            <div class="browser-header">
+              <div class="window-dots">
+                <span class="window-dot red"></span>
+                <span class="window-dot yellow"></span>
+                <span class="window-dot green"></span>
+              </div>
+              <div class="browser-url-pill">hardware.esp32.local</div>
+            </div>
+            <div class="browser-screen">
+              <div class="screenshot-placeholder">
+                <div>ESP32 Hardware Rig</div>
+                <div class="screenshot-placeholder-sub">[Hardware Photo Ready]</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- ==========================================
+     SECTION: CERTIFICATES
+     ========================================== -->
+    <section class="section-card" id="certificates">
+      <svg class="doodle-arrow-svg" style="top: 36px; left: 90px; width: 60px; height: 50px;" viewBox="0 0 60 50">
+        <path d="M 50 10 Q 20 15 15 40" />
+        <path d="M 25 35 L 15 40 L 10 30" />
+      </svg>
+
+      <h2 class="section-title">CERTIFICATES</h2>
+      <div class="section-subtitle">COURSES &amp; CREDENTIALS</div>
+
+      <div class="cert-grid-wrapper">
+
+        <!-- Certificate 1 -->
+        <div class="cert-card">
+          <div class="cert-card-top">
+            <div class="cert-icon-box">💻</div>
+            <span class="cert-date-pill">2026</span>
+          </div>
+          <h3 class="cert-title">CS107: C++ Programming</h3>
+          <div class="cert-issuer">Saylor Academy</div>
+          <p class="cert-desc">Completed Feb 5, 2026 · 40 hours · Grade: 92.50%</p>
+          <div class="cert-btn-group">
+            <a href="https://saylor.org/certificate/9353018112AS" target="_blank" rel="noopener noreferrer" class="cert-btn cert-btn-outline">
+              View Certificate ↗
+            </a>
+            <a href="assets/certificates/C++_Certificate.pdf" download class="cert-btn cert-btn-filled">
+              ⬇ Download Certificate
+            </a>
+          </div>
+        </div>
+
+        <!-- Certificate 2 -->
+        <div class="cert-card">
+          <div class="cert-card-top">
+            <div class="cert-icon-box">🤖</div>
+            <span class="cert-date-pill">2026</span>
+          </div>
+          <h3 class="cert-title">Introduction to Artificial Intelligence</h3>
+          <div class="cert-issuer">Infosys Springboard</div>
+          <p class="cert-desc">Completed March 24, 2026</p>
+          <div class="cert-btn-group">
+            <a href="https://verify.onwingspan.com" target="_blank" rel="noopener noreferrer" class="cert-btn cert-btn-outline">
+              View Certificate ↗
+            </a>
+            <a href="assets/certificates/Introduction-to-AI-Certificate.pdf" download class="cert-btn cert-btn-filled">
+              ⬇ Download Certificate
+            </a>
+          </div>
+        </div>
+
+        <!-- Certificate 3 -->
+        <div class="cert-card">
+          <div class="cert-card-top">
+            <div class="cert-icon-box">⏱️</div>
+            <span class="cert-date-pill">2025</span>
+          </div>
+          <h3 class="cert-title">Time Management Tips</h3>
+          <div class="cert-issuer">LinkedIn Learning</div>
+          <p class="cert-desc">Completed Oct 29, 2025 · 7h 51m</p>
+          <div class="cert-btn-group">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="cert-btn cert-btn-outline">
+              View Certificate ↗
+            </a>
+            <a href="assets/certificates/CertificateOfCompletion_Time_Management_Tips.pdf" download class="cert-btn cert-btn-filled">
+              ⬇ Download Certificate
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    
+    <!-- ==========================================
+         SECTION 7: RESUME (Native On-Page Presentation)
+         ========================================== -->
+    <section class="section-card resume-card" id="resume">
+      <div class="resume-top-bar">
+        <div>
+          <h2 class="section-title">RESUME (CV)</h2>
+          <div class="section-subtitle" style="margin-bottom: 0;">EDUCATION, SKILLS &amp; EXPERIENCE</div>
+        </div>
+        
+        <div class="resume-actions-group">
+          <a href="assets/" target="_blank" download class="resume-download-btn" title="Download Official PDF Resume for ATS">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="resume-sections-container">
+        
+        <!-- 1. Education Block -->
+        <div class="resume-block">
+          <div class="resume-block-header">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent-yellow)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <h3 class="resume-block-title">EDUCATION</h3>
+          </div>
+          
+          <div class="resume-entry-card">
+            <div class="resume-entry-headline">
+              <div>
+                <h4 class="resume-entry-role">Bachelor of Technology in Computer Science &amp; Engineering</h4>
+                <div class="resume-entry-org">Lovely Professional University · Punjab, India</div>
+              </div>
+              <div class="resume-entry-period">Aug 2025 – Present</div>
+            </div>
+            
+            <div class="resume-edu-meta">
+              <span class="resume-meta-pill">CGPA: <strong>9.09 / 10</strong></span>
+              <span class="resume-meta-pill">Major: <strong>Full-Stack &amp; Software Engineering</strong></span>
+            </div>
+
+            <div class="resume-certs-row">
+              <span class="edu-certs-tag">Certifications</span>
+              <span>Introduction to Artificial Intelligence (Infosys Springboard) · Time Management Tips (LinkedIn)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Technical Skills (Matching Homepage Skills Section Exactly) -->
+        <div class="resume-block">
+          <div class="resume-block-header">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent-yellow)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <h3 class="resume-block-title">TECHNICAL SKILLS</h3>
+          </div>
+
+          <div class="skills-unified-cluster" style="margin-top: 4px;">
+            <!-- 1. Git & GitHub -->
+            <div class="tech-chip">
+              <div class="dual-icon-box">
+                <div class="mini-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="#F05032"><path d="M2.59 13.41l7.83 7.83a2.49 2.49 0 0 0 3.52 0l7.46-7.46a2.49 2.49 0 0 0 0-3.52L13.56 2.42a2.49 2.49 0 0 0-3.52 0L2.59 9.88a2.49 2.49 0 0 0 0 3.53zm8.9-8.49a1 1 0 0 1 1.41 0l7.46 7.46a1 1 0 0 1 0 1.41l-7.46 7.46a1 1 0 0 1-1.41 0L3.66 13.4a1 1 0 0 1 0-1.41l7.83-7.07zm-2.07 9.07a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm4.5 4.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-2.25-6.75a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+                </div>
+                <div class="mini-icon" style="background:#181717;">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                </div>
+              </div>
+              <span>Git &amp; GitHub</span>
+            </div>
+
+            <!-- 2. React -->
+            <div class="tech-chip">
+              <div class="tech-chip-icon-box dark" style="background:#20232A;">
+                <svg viewBox="-11.5 -10.23174 23 20.46348" width="22" height="22">
+                  <circle cx="0" cy="0" r="2.05" fill="#61DAFB"/>
+                  <g stroke="#61DAFB" stroke-width="1" fill="none">
+                    <ellipse rx="11" ry="4.2"/>
+                    <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+                    <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+                  </g>
+                </svg>
+              </div>
+              <span>React</span>
+            </div>
+
+            <!-- 3. C++ -->
+            <div class="tech-chip">
+              <div class="tech-chip-icon-box" style="background:#00599C;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF">
+                  <path d="M22.376 10.418l-8.62-4.978a3.178 3.178 0 0 0-3.18 0l-8.62 4.978a3.18 3.18 0 0 0-1.59 2.755v9.954a3.18 3.18 0 0 0 1.59 2.754l8.62 4.978a3.18 3.18 0 0 0 3.18 0l8.62-4.978a3.18 3.18 0 0 0 1.59-2.754v-9.954a3.18 3.18 0 0 0-1.59-2.755zm-10.21 16.3a2.38 2.38 0 0 1-2.38-2.38 2.38 2.38 0 0 1 2.38-2.38 2.38 2.38 0 0 1 2.38 2.38 2.38 2.38 0 0 1-2.38 2.38zm7.14-7.14h-1.59v1.59h-1.58v-1.59h-1.59v-1.58h1.59V16.4h1.58v1.59h1.59zm-6.35 0h-1.59v1.59h-1.58v-1.59h-1.59v-1.58h1.59V16.4h1.58v1.59h1.59z"/>
+                </svg>
+              </div>
+              <span>C++</span>
+            </div>
+
+            <!-- 4. Python -->
+            <div class="tech-chip">
+              <div class="tech-chip-icon-box" style="background:#F8FAFC;">
+                <svg viewBox="0 0 24 24" width="22" height="22">
+                  <path fill="#3776AB" d="M11.91 0c-1.8 0-3.5.16-4.95.45C4.07 1.05 3.8 2.2 3.8 4.2v2.45h8.2v1.2H3.8C1.7 7.85 0 9.55 0 11.95c0 2.45 1.75 4.15 3.85 4.15h1.85v-2.5c0-1.75 1.45-3.2 3.2-3.2h8.2c1.7 0 3.1-1.4 3.1-3.1V4.2c0-2-1.7-3.75-3.8-4.15A27.8 27.8 0 0 0 11.91 0zm-2.7 2.15c.65 0 1.2.55 1.2 1.2s-.55 1.2-1.2 1.2-1.2-.55-1.2-1.2.55-1.2 1.2-1.2z"/>
+                  <path fill="#FFD438" d="M20.15 7.85h-1.85v2.5c0 1.75-1.45 3.2-3.2 3.2H6.9c-1.7 0-3.1 1.4-3.1 3.1v3.1c0 2 1.7 3.75 3.8 4.15 1.45.3 3.15.45 4.95.45 1.8 0 3.5-.15 4.95-.45 2.89-.6 3.16-1.75 3.16-3.75v-2.45h-8.2v-1.2h8.2c2.1 0 3.8-1.7 3.8-4.1 0-2.45-1.75-4.15-3.85-4.15zm-5.36 13.95c-.65 0-1.2-.55-1.2-1.2s.55-1.2 1.2-1.2 1.2.55 1.2 1.2-.55 1.2-1.2 1.2z"/>
+                </svg>
+              </div>
+              <span>Python</span>
+            </div>
+
+            <!-- 5. PostgreSQL -->
+            <div class="tech-chip">
+              <div class="tech-chip-icon-box" style="background:#336791;">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#FFFFFF">
+                  <path d="M12.02 0c-3.1 0-5.7 1.46-7.23 3.8-1.02-.13-2.03-.04-2.9.33-.8.34-1.45.92-1.75 1.74-.32.88-.16 2.06.66 3.96.6 1.38 1.4 2.65 2.17 3.65.1.84.4 1.77.93 2.7.75 1.3 1.78 2.45 2.92 3.27 1.5 1.07 3.2 1.7 4.9 1.78.2.3.4.6.6.85.27.35.58.65.9.87.5.34 1.08.45 1.63.3.4-.1.74-.34 1-.68.32-.42.45-.98.37-1.57-.1-.7-.5-1.56-1.12-2.35 1.1-.38 2.05-1.03 2.76-1.9.7-.86 1.07-1.92 1.04-3.03-.03-1.1-.5-2.22-1.32-3.15-.8-.9-1.9-1.55-3.1-1.85-.3-.7-.7-1.4-1.2-2-.9-1.1-2.1-1.9-3.4-2.35-.9-.3-1.9-.4-2.8-.2.7-.8 1.6-1.4 2.6-1.75 1-.35 2.1-.4 3.2-.1 1.1.26 2.1.8 2.9 1.54.8.74 1.4 1.68 1.7 2.74.3 1.05.3 2.2 0 3.27-.3 1.06-.9 2-1.7 2.74-.8.73-1.8 1.22-2.9 1.4-.4.07-.8.1-1.2.1z"/>
+                </svg>
+              </div>
+              <span>PostgreSQL</span>
+            </div>
+
+            <!-- 6. Claude (AI-assisted dev) -->
+            <div class="tech-chip">
+              <div class="tech-chip-icon-box" style="background:#D97706;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFFFFF">
+                  <path d="M17.472 2.046a.75.75 0 0 0-.825.132L12 6.55 7.353 2.178a.75.75 0 0 0-1.14.342l-2.02 5.568a.75.75 0 0 0 .156.786L8.47 13.5l-4.12 4.626a.75.75 0 0 0-.157.786l2.02 5.568a.75.75 0 0 0 1.14.342L12 20.45l4.647 4.372a.75.75 0 0 0 1.14-.342l2.02-5.568a.75.75 0 0 0-.156-.786L15.53 13.5l4.12-4.626a.75.75 0 0 0 .157-.786l-2.02-5.568a.75.75 0 0 0-.315-.474z"/>
+                </svg>
+              </div>
+              <span>Claude <span style="font-size: 0.95rem; font-weight: normal; color: #64748B;">(AI-assisted dev)</span></span>
+            </div>
+
+            <!-- 7. Google Antigravity (AI-assisted dev) -->
+            <div class="tech-chip text-only-chip">
+              <span>Google Antigravity <span style="font-size: 0.95rem; font-weight: normal; color: #64748B;">(AI-assisted dev)</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Professional Experience & Deliverables -->
+        <!-- <div class="resume-block">
+          <div class="resume-block-header">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent-yellow)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+            <h3 class="resume-block-title">EXPERIENCE &amp; COMMERCIAL DELIVERABLES</h3>
+          </div>
+
+          <div class="resume-entries-stack">
+            
+            <!- Entry 1: Investment Platform ->
+            <div class="resume-entry-card">
+              <div class="resume-entry-headline">
+                <div>
+                  <h4 class="resume-entry-role">Solo Full-Stack Developer</h4>
+                  <div class="resume-entry-org">Managed Investment Platform · Freelance Commercial Client</div>
+                </div>
+                <div class="resume-entry-period">1-Month Sprint · Live</div>
+              </div>
+              <ul class="resume-bullets">
+                <li>Architected and delivered complete multi-tier investment platform solo (Web Application, Android Mobile App, and Admin Management Panel) within a 4-week timeline.</li>
+                <li>Engineered backend REST APIs using NestJS, Prisma ORM, and PostgreSQL with JWT/TOTP 2FA authentication, bcrypt hashing, and implemented rate-limiting to mitigate brute-force attempts.</li>
+                <li>Integrated AWS S3 document pipelines for encrypted KYC verification and Twilio SMS notification webhooks.</li>
+                <li>Live in testing with 180+ active users; stable in production, addressing minor fixes as they arise.</li>
+              </ul>
+            </div>
+
+            <!- Entry 2: SaaS Demo Videos ->
+            <div class="resume-entry-card">
+              <div class="resume-entry-headline">
+                <div>
+                  <h4 class="resume-entry-role">AI-Assisted Video Engineer &amp; Producer</h4>
+                  <div class="resume-entry-org">SaaS Commercial Demo Productions · Freelance</div>
+                </div>
+                <div class="resume-entry-period">3 Clients Delivered</div>
+              </div>
+              <ul class="resume-bullets">
+                <li>Produced 3 product demonstration videos for SaaS startups with end-to-end 3-day delivery sprints.</li>
+                <li>Executed creative pipeline: client discovery, generative AI workflow automation (Claude, Gemini, Google Flow), asset mastering, and sound design.</li>
+                <li>Delivered international commercial showcase video for Eventik (Australia ticketing platform).</li>
+              </ul>
+            </div>
+
+          </div> -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 8: CONTACT SECTION (Let's Talk)
+         ========================================== -->
+    <section class="section-card" id="contact">
+      <div class="sticker-badge" style="bottom: 40px; right: 56px; transform: rotate(8deg);">
+        LET'S TALK ➔
+      </div>
+
+      <div class="contact-layout-grid">
+        <div>
+          <h2 class="section-title">GET IN TOUCH</h2>
+          <div class="section-subtitle">HAVE A PROJECT IN MIND? REACH OUT —</div>
+          
+          <p class="body-copy" style="margin-bottom: 32px;">
+            Whether you need a full-stack web application built from scratch, an AI-driven product demo video, or an embedded hardware MVP, I'm always open to discussing new opportunities.
+          </p>
+
+          <div class="doodle-note" style="position: relative; margin-top: 16px; transform: rotate(-2deg); font-size: 1.55rem;">
+            Let's Connect & Build Something Great 🚀
+          </div>
+        </div>
+
+        <div>
+          <div class="contact-card-box">
+            <a href="mailto:bhattasubash970@gmail.com" class="contact-link-pill">
+              <div class="contact-pill-icon">✉</div>
+              <div>
+                <div style="font-family: var(--font-sans); font-size: 0.76rem; color: #64748B; font-weight: 700;">Direct Email</div>
+                <div>anujpsingh.official@gmail.com </div>
+              </div>
+            </a>
+
+            <a href="https://linkedin.com/in/subash-bhatta" target="_blank" rel="noopener" class="contact-link-pill">
+              <div class="contact-pill-icon" style="background:#0A66C2;">in</div>
+              <div>
+                <div style="font-family: var(--font-sans); font-size: 0.76rem; color: #64748B; font-weight: 700;">LinkedIn Profile</div>
+                <div>https://www.linkedin.com/in/anujpsingh15/</div>
+              </div>
+            </a>
+
+            <a href="https://github.com/bhattasubash" target="_blank" rel="noopener" class="contact-link-pill">
+              <div class="contact-pill-icon" style="background:#18181B;">gh</div>
+              <div>
+                <div style="font-family: var(--font-sans); font-size: 0.76rem; color: #64748B; font-weight: 700;">GitHub Repository</div>
+                <div>https://github.com/anujpsingh-dev</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      Crafted with hand-drawn precision · Anuj P. Singh © 2026
+    </div>
+
+  </main>
+
+  <!-- ==========================================================================
+       SCROLL-DRIVEN SHARED ELEMENT (FLIP) FLIGHT ANIMATION SCRIPT
+       ========================================================================== -->
+  <script>
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('section[id]');
+
+    function updateNavHighlight(sectionKey) {
+      navItems.forEach(item => {
+        if (item.dataset.section === sectionKey) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+
+    // Active Navigation Tracking on Scroll
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0.1
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          if (id) {
+            updateNavHighlight(id);
+          }
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      sectionObserver.observe(section);
+    });
+
+    /* ==========================================================================
+       SHARED ELEMENT SCROLL FLIGHT CONTROLLER (Hero -> About Me Transition)
+       ========================================================================== */
+    function initAvatarFlight() {
+      const heroSlot = document.getElementById('heroAvatarSlot');
+      const aboutSlot = document.getElementById('aboutAvatarSlot');
+      const flyingWrapper = document.getElementById('flyingAvatar');
+      const flyingImg = document.getElementById('avatarImgElement');
+
+      if (!heroSlot || !aboutSlot || !flyingWrapper) return;
+
+      if (window.gsap && window.ScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+
+        ScrollTrigger.getAll().forEach(st => {
+          if (st.vars.id === 'avatarFlight') st.kill();
+        });
+
+        function calculateDeltas() {
+          const heroRect = heroSlot.getBoundingClientRect();
+          const aboutRect = aboutSlot.getBoundingClientRect();
+
+          const heroCenterX = heroRect.left + heroRect.width / 2;
+          const heroCenterY = heroRect.top + window.scrollY + heroRect.height / 2;
+
+          const aboutCenterX = aboutRect.left + aboutRect.width / 2;
+          const aboutCenterY = aboutRect.top + window.scrollY + aboutRect.height / 2;
+
+          const deltaX = aboutCenterX - heroCenterX;
+          const deltaY = aboutCenterY - heroCenterY;
+          const scaleRatio = aboutRect.width / heroRect.width;
+
+          return { deltaX, deltaY, scaleRatio };
+        }
+
+        const flightTimeline = gsap.timeline({
+          scrollTrigger: {
+            id: 'avatarFlight',
+            trigger: '#home',
+            start: 'top top',
+            endTrigger: '#about',
+            end: 'center center',
+            scrub: 0.6,
+            invalidateOnRefresh: true
+          }
+        });
+
+        flightTimeline
+          .to(flyingWrapper, {
+            x: () => calculateDeltas().deltaX,
+            y: () => calculateDeltas().deltaY,
+            scale: () => calculateDeltas().scaleRatio,
+            ease: 'power2.inOut'
+          }, 0)
+          .to(flyingImg, {
+            borderRadius: '18px',
+            borderWidth: '3px',
+            borderColor: '#FFFFFF',
+            boxShadow: '0 10px 24px rgba(15, 23, 42, 0.22)',
+            ease: 'power2.inOut'
+          }, 0);
+
+        window.addEventListener('resize', () => {
+          ScrollTrigger.refresh();
+        });
+
+      } else {
+        let ticking = false;
+
+        function updateFlightNative() {
+          const heroRect = heroSlot.getBoundingClientRect();
+          const aboutRect = aboutSlot.getBoundingClientRect();
+          
+          const homeSection = document.getElementById('home');
+          const aboutSection = document.getElementById('about');
+          
+          const startScroll = homeSection.offsetTop;
+          const endScroll = aboutSection.offsetTop + (aboutSection.offsetHeight / 2) - (window.innerHeight / 2);
+          
+          const scrollY = window.scrollY;
+          const progress = Math.min(Math.max((scrollY - startScroll) / (endScroll - startScroll), 0), 1);
+
+          const heroCenterX = heroRect.left + heroRect.width / 2;
+          const heroCenterY = heroRect.top + window.scrollY + heroRect.height / 2;
+
+          const aboutCenterX = aboutRect.left + aboutRect.width / 2;
+          const aboutCenterY = aboutRect.top + window.scrollY + aboutRect.height / 2;
+
+          const currentX = (aboutCenterX - heroCenterX) * progress;
+          const currentY = (aboutCenterY - heroCenterY) * progress;
+          const currentScale = 1 + ((aboutRect.width / heroRect.width) - 1) * progress;
+
+          flyingWrapper.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(${currentScale})`;
+          ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            window.requestAnimationFrame(updateFlightNative);
+            ticking = true;
+          }
+        }, { passive: true });
+
+        updateFlightNative();
+      }
+    }
+
+    /* ==========================================================================
+       1. SCROLL-DRAWN SVG CONTROLLER (Arrows & Circles)
+       ========================================================================== */
+    function initScrollDrawnSVGs() {
+      const drawTargets = document.querySelectorAll('.draw-on-scroll');
+
+      drawTargets.forEach(target => {
+        const paths = target.querySelectorAll('.draw-path');
+        paths.forEach(path => {
+          const length = path.getTotalLength ? path.getTotalLength() : 300;
+          path.style.strokeDasharray = (length + 2) + 'px';
+          path.style.strokeDashoffset = (length + 2) + 'px';
+        });
+      });
+
+      const drawObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const paths = entry.target.querySelectorAll('.draw-path');
+            paths.forEach((path, i) => {
+              setTimeout(() => {
+                path.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(0.34, 1.3, 0.64, 1)';
+                path.style.strokeDashoffset = '0px';
+              }, i * 140);
+            });
+            drawObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.25 });
+
+      drawTargets.forEach(target => drawObserver.observe(target));
+    }
+
+    /* ==========================================================================
+       2. MAGNETIC TECH CHIPS CONTROLLER (Tactile Physics on Hover)
+       ========================================================================== */
+    function initMagneticChips() {
+      const chips = document.querySelectorAll('.tech-chip');
+
+      chips.forEach(chip => {
+        chip.addEventListener('mousemove', (e) => {
+          const rect = chip.getBoundingClientRect();
+          const x = (e.clientX - rect.left - rect.width / 2) * 0.38;
+          const y = (e.clientY - rect.top - rect.height / 2) * 0.38;
+
+          chip.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${x * 0.08}deg)`;
+          chip.style.transition = 'transform 0.08s ease-out';
+        });
+
+        chip.addEventListener('mouseleave', () => {
+          chip.style.transform = 'translate3d(0, 0, 0) rotate(0deg)';
+          chip.style.transition = 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
+      });
+    }
+
+    /* ==========================================================================
+       3. BROWSER FRAME SCROLL-PREVIEW CONTROLLER (Hover & Drag to Explore)
+       ========================================================================== */
+    function initFrameScrollPreviews() {
+      const browserScreens = document.querySelectorAll('.browser-screen');
+
+      browserScreens.forEach(screen => {
+        const img = screen.querySelector('img');
+        if (!img) return;
+
+        if (!screen.querySelector('.screen-scroll-hint')) {
+          const hint = document.createElement('div');
+          hint.className = 'screen-scroll-hint';
+          hint.innerHTML = '↕ Hover / Drag to explore';
+          screen.appendChild(hint);
+        }
+
+        let isDragging = false;
+        let startY = 0;
+        let currentTranslateY = 0;
+        let maxTranslateY = 0;
+
+        function updateMaxTranslate() {
+          const screenHeight = screen.clientHeight;
+          const imgHeight = img.naturalHeight && img.naturalWidth 
+            ? (screen.clientWidth / img.naturalWidth) * img.naturalHeight 
+            : img.clientHeight;
+          maxTranslateY = Math.max(0, imgHeight - screenHeight);
+        }
+
+        if (img.complete) {
+          updateMaxTranslate();
+        } else {
+          img.addEventListener('load', updateMaxTranslate);
+        }
+        window.addEventListener('resize', updateMaxTranslate);
+
+        // Smooth Hover Panning
+        screen.addEventListener('mousemove', (e) => {
+          if (isDragging) return;
+          updateMaxTranslate();
+          if (maxTranslateY <= 0) return;
+
+          const rect = screen.getBoundingClientRect();
+          const progress = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+          const targetY = -progress * maxTranslateY;
+          img.style.transform = `translateY(${targetY}px)`;
+        });
+
+        screen.addEventListener('mouseleave', () => {
+          if (isDragging) return;
+          img.style.transform = 'translateY(0px)';
+        });
+
+        // Click-and-Drag Panning
+        screen.addEventListener('mousedown', (e) => {
+          updateMaxTranslate();
+          if (maxTranslateY <= 0) return;
+          isDragging = true;
+          startY = e.clientY;
+          
+          const matrix = window.getComputedStyle(img).transform;
+          if (matrix !== 'none' && matrix.includes('matrix')) {
+            const values = matrix.split('(')[1].split(')')[0].split(',');
+            currentTranslateY = parseFloat(values[5]) || 0;
+          } else {
+            currentTranslateY = 0;
+          }
+
+          screen.classList.add('is-dragging');
+          e.preventDefault();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const deltaY = e.clientY - startY;
+          let newY = currentTranslateY + deltaY;
+          newY = Math.max(-maxTranslateY, Math.min(0, newY));
+          img.style.transform = `translateY(${newY}px)`;
+        });
+
+        window.addEventListener('mouseup', () => {
+          if (isDragging) {
+            isDragging = false;
+            screen.classList.remove('is-dragging');
+          }
+        });
+      });
+    }
+
+    // Initialize All Interactive Systems on Load
+    function initAllInteractiveEffects() {
+      initAvatarFlight();
+      initScrollDrawnSVGs();
+      initMagneticChips();
+      initFrameScrollPreviews();
+    }
+
+    window.addEventListener('DOMContentLoaded', initAllInteractiveEffects);
+    window.addEventListener('load', () => {
+      setTimeout(initAllInteractiveEffects, 150);
+    });
+  </script>
+</body>
+</html>
